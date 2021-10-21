@@ -62,3 +62,8 @@ rl.print();
 - not so sure the efficiency of large size of range list
 refactored
 - some code need to be refactored
+
+## Thanks
+
+- firstly, thanks to jerry.ai that I got a opportunity to write this project.
+- secondly, thanks Jayden Li, that I found a npm package: j-range-list-js published by him witch inspired me from several aspects.
