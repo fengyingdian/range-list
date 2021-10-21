@@ -2,7 +2,8 @@
   "name": "range-list",
   "version": "0.0.1",
   "description": "A lib for managing range list.",
-  "main": "index.js",
+  "main": "dist/rangeList.js",
+  "types": "dist/rangeList.d.ts",
   "scripts": {
     "clean:dist": "rm -rf ./dist",
     "build": "yarn clean:dist && tsc --importHelpers",
@@ -12,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/fengyingdian/range-list.git"
   },
-  "author": "neo",
+  "author": "break",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fengyingdian/range-list/issues"

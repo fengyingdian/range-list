@@ -6,7 +6,7 @@
 /*   By: break <jixueqing@flipboard.cn>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 22:09:46 by break             #+#    #+#             */
-/*   Updated: 2021/10/22 00:34:08 by break            ###   ########.fr       */
+/*   Updated: 2021/10/22 02:11:08 by break            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ import {
   RANGE_OVERLAPPED_ERROR,
   RANGE_ELEMENT_TYPE_ERROR,
   RANGE_ELEMENT_ORDER_ERROR,
-} from '../src/Errors';
+} from '../src/errors';
 
-import { MyRangeList } from '../src/RangeList';
+import { MyRangeList } from '../src/rangeList';
 
 describe('init', () => {
   it('should be intiated correctedly.', () => {
