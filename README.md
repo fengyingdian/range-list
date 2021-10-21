@@ -4,7 +4,7 @@
 
 A lib for managing range list.
 
-- range: a pair of integers (other type would initiate errors): such as [2, 6), this range inclouds integers: 2, 3, 4, and 5.
+- range: a pair of **integers** (other type would initiate errors): such as [2, 6), this range inclouds integers: 2, 3, 4, and 5.
 - range list
   - ordered: from samll to large: such as [10, 20) [6, 9) is not right, the right order is [6, 9) [10, 20)
   - not overlapped: such as [2, 10) [5, 20) is not right, the right list is [2, 5) [10, 20)
@@ -55,3 +55,10 @@ rl.print();
 // Should display: [1, 3) [19, 21)
 
 ```
+
+## Works not finished
+
+- form now on, **integer** is only validated, if users who use pairs of **decimal** as a range, may initiate unkown error
+- not so sure the efficiency of large size of range list
+refactored
+- some code need to be refactored
