@@ -12,14 +12,14 @@ A lib for managing range list.
 ## Development
 
 - developed with typescript.
-- use babel to support es6 develop environment
+- use babel to support es6 develop environment.
 - use ts-jest to test.
 - also support script in package.json to help develop and test.
 
 ## How to use
 
 - not pulished yet.
-- but MIT license makes you feel free to fork
+- but MIT license makes you feel free to fork.
 
 ```javascript
 const rl = new RangeList();

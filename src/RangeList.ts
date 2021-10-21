@@ -22,6 +22,11 @@ import {
 
 export type MyRange = [number, number];
 
+export type MyIterator = {
+  i: number,
+  size: number,
+  itersectStartIndex: number,
+};
 export class MyRangeList {
   rangeList: MyRange[] = [];
   printString: string = '';
@@ -130,15 +135,7 @@ export class MyRangeList {
    * @param range {MyRange};
    */
   _insertIntoList(range: MyRange) {
-    const iterator: {
-      i: number,
-      size: number,
-      itersectStartIndex: number,
-    } = {
-      i: 0,
-      size: this.rangeList.length,
-      itersectStartIndex: -1,
-    };
+    const iterator = this._initIterator();
 
     // if range list is empty, insert range into the list and return
     if (iterator.size === 0) {
@@ -197,6 +194,20 @@ export class MyRangeList {
   }
 
   /**
+   * init a iterator
+   * @returns iterator
+   */
+  _initIterator() {
+    const iterator: MyIterator = {
+      i: 0,
+      size: this.rangeList.length,
+      itersectStartIndex: -1,
+    };
+
+    return iterator;
+  }
+
+  /**
    * merge two ranges into one range
    * @param range {MyRange};
    * @param currentRange {MyRange}
@@ -212,15 +223,7 @@ export class MyRangeList {
    * @param range {MyRange};
    */
   _removeFromList(range: MyRange) {
-    const iterator: {
-      i: number,
-      size: number,
-      itersectStartIndex: number,
-    } = {
-      i: 0,
-      size: this.rangeList.length,
-      itersectStartIndex: -1,
-    };
+    const iterator = this._initIterator();
 
     // if range list is empty, just return
     if (iterator.size === 0) {
@@ -244,11 +247,7 @@ export class MyRangeList {
           return;
         }
 
-        const [start3] = this.rangeList[iterator.itersectStartIndex];
-        if (start3 < start1) {
-          const newRange = [start3, start1] as MyRange;
-          return this.rangeList.splice(iterator.itersectStartIndex, iterator.i - iterator.itersectStartIndex + 1, newRange);
-        }
+        this._splice(iterator, start1);
       }
 
       // overlapped
@@ -286,12 +285,21 @@ export class MyRangeList {
     }
 
     if (iterator.itersectStartIndex !== -1) {
-      const [start3] = this.rangeList[iterator.itersectStartIndex];
-      if (start3 < start1) {
-        const newRange = [start3, start1] as MyRange;
-        this.rangeList.splice(iterator.itersectStartIndex, iterator.i - iterator.itersectStartIndex + 1, newRange);
-      }
+      this._splice(iterator, start1);
     }
+  }
+
+  /**
+   *
+   * @param iterator {MyIterator}
+   * @param rangeStart {number}
+   */
+  _splice(iterator: MyIterator, rangeStart: number) {
+    const [start] = this.rangeList[iterator.itersectStartIndex];
+    if (start >= rangeStart) return;
+
+    const newRange = [start, rangeStart] as MyRange;
+    this.rangeList.splice(iterator.itersectStartIndex, iterator.i - iterator.itersectStartIndex + 1, newRange);
   }
 
   /**
