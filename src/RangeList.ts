@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,18 +7,29 @@
 /*   By: break <jixueqing@flipboard.cn>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:31:04 by break             #+#    #+#             */
-/*   Updated: 2021/10/21 22:10:15 by break            ###   ########.fr       */
+/*   Updated: 2021/10/21 22:46:18 by break            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-type MyRange = [number, number];
+import {
+  RANGE_TYPE_ERROR,
+  RANGE_ELEMENT_TYPE_ERROR,
+  RANGE_ELEMENT_ORDER_ERROR,
+  RANGE_LIST_TYPE_ERROR,
+  RANGE_ORDER_ERROR,
+  RANGE_OVERLAPPED_ERROR
+} from './Errors';
 
-export default class MyRangeList {
+export type MyRange = [number, number];
+
+export class MyRangeList {
   rangeList: MyRange[] = [];
+  printString: string = '';
 
   constructor(list: MyRange[] = []) {
     this._validateList(list);
     this.rangeList = list;
+    this._generateString();
   }
 
   /**
@@ -27,6 +39,7 @@ export default class MyRangeList {
   add(range: MyRange) {
     this._validateRange(range);
     this._insertIntoList(range);
+    this._generateString();
   }
 
   /**
@@ -36,14 +49,11 @@ export default class MyRangeList {
   remove(range: MyRange) {
     this._validateRange(range);
     this._removeFromList(range);
+    this._generateString();
   }
 
   print() {
-    const res = this.rangeList
-      .map(this._printRange)
-      .reduceRight((cur, sum) => sum += ` ${cur}`, '');
-
-    console.log(res);
+    console.log(this.printString);
   }
 
   /**
@@ -52,16 +62,16 @@ export default class MyRangeList {
    */
   _validateRange(range: MyRange) {
     if (!range || !Array.isArray(range) || range.length !== 2) {
-      throw new Error('A range should be pair of numbers.');
+      throw new Error(RANGE_TYPE_ERROR);
     }
 
     const [start, end] = range;
     if (typeof start !== 'number' || typeof end !== 'number') {
-      throw new Error('Elment of range should be type of number.');
+      throw new Error(RANGE_ELEMENT_TYPE_ERROR);
     }
 
     if (start > end) {
-      throw new Error('The second value of the range should be equal or larger the first value.');
+      throw new Error(RANGE_ELEMENT_ORDER_ERROR);
     }
   }
 
@@ -85,7 +95,7 @@ export default class MyRangeList {
    * @returns boolean
    */
   _isOrdered(range1: MyRange, range2: MyRange): boolean {
-    return range1[1] < range2[0];
+    return range1[0] < range2[0];
   }
 
   /**
@@ -94,20 +104,22 @@ export default class MyRangeList {
    */
   _validateList(rangeList: MyRange[]) {
     if (!rangeList || !Array.isArray(rangeList)) {
-      throw new Error('A range list should be type of Array.');
+      throw new Error(RANGE_LIST_TYPE_ERROR);
     }
 
-    for (let i = 0; i < rangeList.length - 1; i++) {
+    for (let i = 0; i < rangeList.length; i++) {
       const currentRange = rangeList[i];
       this._validateRange(currentRange);
 
-      const nextRange = rangeList[i + 1];
-      if (!this._isOrdered(currentRange, nextRange)) {
-        throw new Error('A range list should be ordered from small to large.');
-      }
+      if (i < rangeList.length - 1) {
+        const nextRange = rangeList[i + 1];
+        if (!this._isOrdered(currentRange, nextRange)) {
+          throw new Error(RANGE_ORDER_ERROR);
+        }
 
-      if (this._isOverlapped(currentRange, nextRange)) {
-        throw new Error('A range list should not be overlapped.');
+        if (this._isOverlapped(currentRange, nextRange)) {
+          throw new Error(RANGE_OVERLAPPED_ERROR);
+        }
       }
     }
   }
@@ -283,42 +295,22 @@ export default class MyRangeList {
   }
 
   /**
-   * print a single range
+   * format range list to [x1, y1) [x2, y2)...
    * @param range {MyRange};
    * @returns {string}
    */
-  _printRange(range: MyRange): string {
+  _generateString() {
+    this.printString = this.rangeList
+      .map(this._getRangeString)
+      .join(' ');
+  }
+
+  /**
+   * format a single range to [x, y)
+   * @param range {MyRange};
+   * @returns {string}
+   */
+  _getRangeString(range: MyRange): string {
     return `[${range[0]}, ${range[1]})`;
   }
 }
-
-const rl = new MyRangeList();
-rl.add([1, 5]);
-rl.print();
-// Should display: [1, 5)
-rl.add([10, 20]);
-rl.print();
-// Should display: [1, 5) [10, 20)
-rl.add([20, 20]);
-rl.print();
-// Should display: [1, 5) [10, 20)
-rl.add([20, 21]);
-rl.print();
-// Should display: [1, 5) [10, 21)
-rl.add([2, 4]);
-rl.print();
-// Should display: [1, 5) [10, 21)
-rl.add([3, 8]);
-rl.print();
-// Should display: [1, 8) [10, 21)
-rl.remove([10, 10]);
-rl.print();
-// Should display: [1, 8) [10, 21)
-rl.remove([10, 11]);
-rl.print();
-// Should display: [1, 8) [11, 21)
-rl.remove([15, 17]);
-rl.print();
-// Should display: [1, 8) [11, 15) [17, 21)
-rl.remove([3, 19]);
-rl.print();
