@@ -6,7 +6,7 @@
 /*   By: break <jixueqing@flipboard.cn>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:31:04 by break             #+#    #+#             */
-/*   Updated: 2021/10/21 20:50:17 by break            ###   ########.fr       */
+/*   Updated: 2021/10/21 21:29:13 by break            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ class MyRangeList {
   rangeList: MyRange[] = [];
 
   constructor(list: MyRange[] = []) {
+    this._validateList(list);
     this.rangeList = list;
   }
 
@@ -57,6 +58,54 @@ class MyRangeList {
 
     if (start > end) {
       throw new Error('The second value of the range should be equal or larger the first value.');
+    }
+  }
+
+  /**
+   * check if these two ranges are overlapped
+   * range1 is ahead of range2
+   * @param range1 {MyRange}
+   * @param range2 {MyRange}
+   */
+  _isOverlapped(range1: MyRange, range2: MyRange) {
+    const [start1, end1] = range1;
+    const [start2, end2] = range2;
+    return (start1 < end2) && (end1 > start2);
+  }
+
+  /**
+   * check if these two ranges are overlapped
+   * range1 is ahead of range2
+   * @param range1 {MyRange}
+   * @param range2 {MyRange}
+   */
+  _isOrdered(range1: MyRange, range2: MyRange) {
+    const [, end1] = range1;
+    const [start2] = range2;
+    return end1 < start2;
+  }
+
+  /**
+   * validate range list
+   * @param rangeList {MyRange[]}
+   */
+  _validateList(rangeList: MyRange[]) {
+    if (!rangeList || !Array.isArray(rangeList)) {
+      throw new Error('A range list should be type of Array.');
+    }
+
+    for (let i = 0; i < rangeList.length - 1; i++) {
+      const currentRange = rangeList[i];
+      this._validateRange(currentRange);
+
+      const nextRange = rangeList[i + 1];
+      if (!this._isOrdered(currentRange, nextRange)) {
+        throw new Error('A range list should be ordered from small to large.');
+      }
+
+      if (this._isOverlapped(currentRange, nextRange)) {
+        throw new Error('A range list should not be overlapped.');
+      }
     }
   }
 
@@ -231,34 +280,10 @@ class MyRangeList {
   }
 }
 
-const rl = new MyRangeList();
-rl.add([1, 5]);
-// rl.print();
-// Should display: [1, 5)
-rl.add([10, 20]);
-// rl.print();
-// Should display: [1, 5) [10, 20)
-rl.add([20, 20]);
-// rl.print();
-// Should display: [1, 5) [10, 20)
-rl.add([20, 21]);
-// rl.print();
-// Should display: [1, 5) [10, 21)
-rl.add([2, 4]);
-// rl.print();
-// Should display: [1, 5) [10, 21)
-rl.add([3, 8]);
-// rl.print();
-// Should display: [1, 8) [10, 21)
-rl.remove([10, 10]);
+const rl = new MyRangeList([[1, 8], [11, 15], [17, 21]]);
 rl.print();
-// Should display: [1, 8) [10, 21)
-rl.remove([10, 11]);
+rl.add([9, 11]);
 rl.print();
-// Should display: [1, 8) [11, 21)
-rl.remove([15, 17]);
-rl.print();
-// Should display: [1, 8) [11, 15) [17, 21)
-rl.remove([3, 19]);
+rl.remove([9, 11]);
 rl.print();
 // Should display: [1, 3) [19, 21)
