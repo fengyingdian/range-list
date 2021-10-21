@@ -6,7 +6,7 @@
 /*   By: break <jixueqing@flipboard.cn>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:31:04 by break             #+#    #+#             */
-/*   Updated: 2021/10/21 11:23:20 by break            ###   ########.fr       */
+/*   Updated: 2021/10/21 12:36:20 by break            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ class MyRangeList {
    */
   add(range: MyRange) {
     this._validateRange(range);
+    this._insertIntoList(range);
+  }
 
+  print() {
+    console.log(this.rangeList);
   }
 
   /**
@@ -86,7 +90,7 @@ class MyRangeList {
         }
 
         const newRange = this._merge(this.rangeList[iterator.itersectStartIndex], range);
-        return this.rangeList.splice(iterator.itersectStartIndex, iterator.i - iterator.itersectStartIndex, newRange);
+        return this.rangeList.splice(iterator.itersectStartIndex, (iterator.i - iterator.itersectStartIndex), newRange);
       }
 
       // overlapped
@@ -101,16 +105,23 @@ class MyRangeList {
       }
 
       // overlapped
-      if (iterator.i) {
-        if (iterator.itersectStartIndex === -1) {
-          const newRange = this._merge(this.rangeList[iterator.i], range);
-          return this.rangeList.splice(iterator.i, 1, newRange);
-        }
-
-        const tmpRange = this._merge(this.rangeList[iterator.i], range);
-        const newRange = this._merge(this.rangeList[iterator.itersectStartIndex], tmpRange);
-        return this.rangeList.splice(iterator.itersectStartIndex, iterator.i - iterator.itersectStartIndex - 1, newRange);
+      if (iterator.itersectStartIndex === -1) {
+        const newRange = this._merge(this.rangeList[iterator.i], range);
+        return this.rangeList.splice(iterator.i, 1, newRange);
       }
+
+      const newRange = this._merge(this.rangeList[iterator.itersectStartIndex], this._merge(this.rangeList[iterator.i], range));
+      return this.rangeList.splice(iterator.itersectStartIndex, iterator.i - iterator.itersectStartIndex + 1, newRange);
+    }
+
+    if (iterator.i === iterator.size) {
+      if (iterator.itersectStartIndex === -1) {
+        return this.rangeList.push(range);
+      }
+
+      const newRange = this._merge(this.rangeList[iterator.itersectStartIndex], this._merge(this.rangeList[iterator.size - 1], range));
+      this.rangeList.splice(iterator.itersectStartIndex, (iterator.size - iterator.itersectStartIndex), newRange);
+      return;
     }
   }
 
@@ -147,3 +158,28 @@ class MyRangeList {
     return [Math.min(start1, start2), Math.max(end1, end2)] as MyRange;
   }
 }
+
+const rl = new MyRangeList();
+rl.add([1, 5]);
+rl.print();
+// Should display: [1, 5)
+rl.add([10, 20]);
+rl.print();
+// Should display: [1, 5) [10, 20)
+rl.add([20, 20]);
+rl.print();
+// Should display: [1, 5) [10, 20)
+rl.add([20, 21]);
+rl.print();
+// Should display: [1, 5) [10, 21)
+rl.add([2, 4]);
+rl.print();
+// Should display: [1, 5) [10, 21)
+rl.add([3, 8]);
+rl.print();
+rl.add([-5, -4]);
+rl.print();
+rl.add([50, 56]);
+rl.print();
+rl.add([3, 58]);
+rl.print();

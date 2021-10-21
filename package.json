@@ -4,6 +4,8 @@
   "description": "A interesting algorithm test of range list",
   "main": "index.js",
   "scripts": {
+    "clean:dist": "rm -rf ./dist",
+    "build": "yarn clean:dist && tsc --importHelpers",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
