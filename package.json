@@ -1,0 +1,24 @@
+{
+  "name": "range-list",
+  "version": "1.0.0",
+  "description": "A interesting algorithm test of range list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fengyingdian/range-list.git"
+  },
+  "author": "neo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fengyingdian/range-list/issues"
+  },
+  "homepage": "https://github.com/fengyingdian/range-list#readme",
+  "keywords": [],
+  "devDependencies": {
+    "tslint": "^6.1.3",
+    "typescript": "^4.4.4"
+  }
+}
