@@ -6,13 +6,13 @@
 /*   By: break <jixueqing@flipboard.cn>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 23:31:04 by break             #+#    #+#             */
-/*   Updated: 2021/10/21 21:29:13 by break            ###   ########.fr       */
+/*   Updated: 2021/10/21 22:10:15 by break            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 type MyRange = [number, number];
 
-class MyRangeList {
+export default class MyRangeList {
   rangeList: MyRange[] = [];
 
   constructor(list: MyRange[] = []) {
@@ -39,7 +39,11 @@ class MyRangeList {
   }
 
   print() {
-    console.log(this.rangeList);
+    const res = this.rangeList
+      .map(this._printRange)
+      .reduceRight((cur, sum) => sum += ` ${cur}`, '');
+
+    console.log(res);
   }
 
   /**
@@ -78,11 +82,10 @@ class MyRangeList {
    * range1 is ahead of range2
    * @param range1 {MyRange}
    * @param range2 {MyRange}
+   * @returns boolean
    */
-  _isOrdered(range1: MyRange, range2: MyRange) {
-    const [, end1] = range1;
-    const [start2] = range2;
-    return end1 < start2;
+  _isOrdered(range1: MyRange, range2: MyRange): boolean {
+    return range1[1] < range2[0];
   }
 
   /**
@@ -278,12 +281,44 @@ class MyRangeList {
       }
     }
   }
+
+  /**
+   * print a single range
+   * @param range {MyRange};
+   * @returns {string}
+   */
+  _printRange(range: MyRange): string {
+    return `[${range[0]}, ${range[1]})`;
+  }
 }
 
-const rl = new MyRangeList([[1, 8], [11, 15], [17, 21]]);
+const rl = new MyRangeList();
+rl.add([1, 5]);
 rl.print();
-rl.add([9, 11]);
+// Should display: [1, 5)
+rl.add([10, 20]);
 rl.print();
-rl.remove([9, 11]);
+// Should display: [1, 5) [10, 20)
+rl.add([20, 20]);
 rl.print();
-// Should display: [1, 3) [19, 21)
+// Should display: [1, 5) [10, 20)
+rl.add([20, 21]);
+rl.print();
+// Should display: [1, 5) [10, 21)
+rl.add([2, 4]);
+rl.print();
+// Should display: [1, 5) [10, 21)
+rl.add([3, 8]);
+rl.print();
+// Should display: [1, 8) [10, 21)
+rl.remove([10, 10]);
+rl.print();
+// Should display: [1, 8) [10, 21)
+rl.remove([10, 11]);
+rl.print();
+// Should display: [1, 8) [11, 21)
+rl.remove([15, 17]);
+rl.print();
+// Should display: [1, 8) [11, 15) [17, 21)
+rl.remove([3, 19]);
+rl.print();
