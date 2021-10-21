@@ -7,6 +7,7 @@
   "scripts": {
     "clean:dist": "rm -rf ./dist",
     "build": "yarn clean:dist && tsc --importHelpers",
+    "release": "tsc && npm publish",
     "test": "jest"
   },
   "repository": {
