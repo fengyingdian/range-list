@@ -1,6 +1,6 @@
 {
-  "name": "range-list",
-  "version": "0.0.1",
+  "name": "neo-range-list",
+  "version": "0.0.3",
   "description": "A lib for managing range list.",
   "main": "dist/rangeList.js",
   "types": "dist/rangeList.d.ts",
@@ -14,13 +14,17 @@
     "type": "git",
     "url": "git+https://github.com/fengyingdian/range-list.git"
   },
-  "author": "break",
+  "author": "fengyingdian",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fengyingdian/range-list/issues"
   },
   "homepage": "https://github.com/fengyingdian/range-list#readme",
   "keywords": [],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",

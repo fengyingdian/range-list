@@ -18,7 +18,7 @@ import {
   RANGE_LIST_TYPE_ERROR,
   RANGE_ORDER_ERROR,
   RANGE_OVERLAPPED_ERROR
-} from '../src/errors';
+} from './errors';
 
 export type MyRange = [number, number];
 

@@ -18,11 +18,19 @@ A lib for managing range list.
 
 ## How to use
 
-- not pulished yet.
-- but MIT license makes you feel free to fork.
+- ~~not pulished yet.~~
+- already published by npm
+
+```
+> npm install neo-range-list
+```
+
+- MIT license makes you feel free to fork(https://github.com/fengyingdian/range-list)
 
 ```javascript
-const rl = new RangeList();
+import { MyRangeList } from 'neo-range-list';
+
+const rl = new MyRangeList();
 rl.add([1, 5]);
 rl.print();
 // Should display: [1, 5)
